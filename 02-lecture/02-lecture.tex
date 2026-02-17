@@ -1,0 +1,1132 @@
+\documentclass[]{beamer}
+
+\usetheme{metropolis}
+\metroset{progressbar=frametitle}
+\usefonttheme[onlymath]{serif}
+
+\usepackage[none]{hyphenat}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\author{Maxim Borisyak, Andrey Ustyuzhanin}
+\institute{Constructor University Bremen}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{ifthen}
+\usepackage{pgffor}
+
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\norm}[2][L^2]{%
+\left\| #2 \right\|_{#1}%
+}
+\newcommand{\inner}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\loss}{\mathcal{L}}
+\newcommand{\model}{f_\theta}
+\newcommand{\dataset}{\mathcal{D}}
+
+\newenvironment{important}{%
+  \begin{center}\begin{minipage}{0.9\textwidth}\textbf{Important:} \itshape
+}{%
+  \end{minipage}\end{center}
+}
+
+\newenvironment{method}[1]{%
+  \begin{block}{Method: #1}
+}{%
+  \end{block}
+}
+
+\newcommand{\grade}[1]{%
+  \ifthenelse{#1 > 89}{A}{%
+  \ifthenelse{#1 > 79}{B}{%
+  \ifthenelse{#1 > 69}{C}{F}}}%
+}
+
+
+
+
+
+\begin{document}
+
+
+
+\title{Introduction to \LaTeX}
+
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+
+\section{What is \LaTeX?}
+
+\begin{frame}[fragile]
+\frametitle{\LaTeX}
+\begin{itemize}
+  \item A professional typesetting system for technical documents
+  \item Widely used in Computer Science, Mathematics, Physics
+  \item Ideal for documents with formulas, algorithms, references
+  \item Not a word processor — you write source code that compiles into PDF
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{\LaTeX\ vs. Word Processors}
+Word:
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{imgs/word.png}
+\end{figure}
+
+
+
+\vfill
+
+Beamer (\LaTeX\;slides):
+\begin{align*}
+\mathrm{KL}\left(P\;\middle\|\;Q\right) = \E_{x \sim P} \log \frac{P(x)}{Q(x)}
+\end{align*}
+
+Proper \LaTeX:
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{imgs/equation.pdf}
+\end{figure}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Why \LaTeX?}
+\textbf{For academic writing}:
+\begin{itemize}
+  \item required by most CS conferences and journals;
+  \item consistent, professional formatting;
+  \item automatic numbering (sections, figures, equations, references);
+  \item excellent math typesetting;
+  \item reproducible builds from source.
+\end{itemize}
+
+\textbf{In practice}:
+\begin{itemize}
+  \item Overleaf: collaborative online \LaTeX\ editor;
+  \item local editors: TeXstudio, VS Code + LaTeX Workshop.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Workflow}
+\begin{enumerate}
+  \item Write \texttt{.tex} source file;
+  \item Compile with \texttt{pdflatex} (or \texttt{xelatex}, \texttt{lualatex});
+  \item Run \texttt{bibtex}/\texttt{biber} for references;
+  \item Recompile (twice) to resolve cross-references;
+  \item Get PDF output.
+\end{enumerate}
+
+Most editors handle this automatically.
+
+\end{frame}
+
+\section{Document Structure}
+
+\begin{frame}[fragile]
+\frametitle{Minimal Document}
+A minimal \LaTeX\ document:
+
+\begin{minted}[]{latex}
+\documentclass{article}
+
+\begin{document}
+Hello, World!
+\end{document}
+\end{minted}
+
+\begin{itemize}
+  \item \texttt{\textbackslash documentclass\{...\}} — type of document (\texttt{article}, \texttt{report}, \texttt{book}, \texttt{beamer});
+  \item \texttt{\textbackslash begin\{document\}...\textbackslash end\{document\}} — the document body.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Preamble}
+\footnotesize
+
+Everything between \texttt{\textbackslash documentclass} and \texttt{\textbackslash begin\{document\}} is the \textbf{preamble}:
+
+\begin{minted}[fontsize=\footnotesize]{latex}
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{My First Paper}
+\author{Jane Doe}
+\date{\today}
+
+\begin{document}
+\maketitle
+...
+\end{document}
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Common Document Classes}
+\begin{itemize}
+  \item \texttt{article} — short documents, papers;
+  \item \texttt{report} — longer documents with chapters;
+  \item \texttt{book} — books, theses;
+  \item \texttt{beamer} — presentations (slides);
+  \item many conferences provide their own class (e.g., \texttt{llncs}, \texttt{acmart}).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Packages}
+Packages extend \LaTeX\ functionality:
+
+\begin{minted}[]{latex}
+\usepackage{amsmath}      % advanced math
+\usepackage{graphicx}     % include images
+\usepackage{hyperref}     % clickable links
+\usepackage{booktabs}     % professional tables
+\usepackage{algorithm2e}  % algorithm pseudocode
+\usepackage{listings}     % source code
+\usepackage{tikz}         % diagrams
+\end{minted}
+
+Load packages in the preamble with \texttt{\textbackslash usepackage[options]\{name\}}.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sectioning}
+\LaTeX\ provides hierarchical sections:
+
+\begin{minted}[]{latex}
+\section{Introduction}
+\subsection{Background}
+\subsubsection{Details}
+\paragraph{Note}
+\end{minted}
+
+\begin{itemize}
+  \item Sections are automatically numbered;
+  \item \texttt{\textbackslash section*\{...\}} — unnumbered version;
+  \item \texttt{\textbackslash tableofcontents} — generates table of contents automatically.
+\end{itemize}
+
+\end{frame}
+
+\section{Text Formatting}
+
+\begin{frame}[fragile]
+\frametitle{Basic Text Formatting}
+\begin{minted}[]{latex}
+\textbf{bold text}
+\textit{italic text}
+\texttt{monospace text}
+\underline{underlined text}
+
+\emph{emphasized} % italic in normal text,
+                   % normal in italic context
+\end{minted}
+
+\textbf{Result}: \textbf{bold text}, \textit{italic text}, \texttt{monospace text}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Lists}
+\textbf{Itemized (bullet) list}:
+\begin{minted}[]{latex}
+\begin{itemize}
+  \item First item
+  \item Second item
+\end{itemize}
+\end{minted}
+
+\textbf{Enumerated (numbered) list}:
+\begin{minted}[]{latex}
+\begin{enumerate}
+  \item First item
+  \item Second item
+\end{enumerate}
+\end{minted}
+
+Lists can be nested.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Special Characters}
+Some characters have special meaning in \LaTeX:
+
+\begin{minted}[]{latex}
+\%  \$  \&  \#  \_  \{  \}
+\textbackslash  \textasciitilde
+\end{minted}
+
+\begin{itemize}
+  \item \texttt{\%} — comment (rest of line is ignored);
+  \item \texttt{\$} — math mode delimiter;
+  \item \texttt{\&} — column separator in tables;
+  \item \texttt{\textbackslash\textbackslash} — line break;
+  \item \texttt{\textasciitilde} — non-breaking space.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Whitespace and Line Breaks}
+\begin{itemize}
+  \item Multiple spaces are treated as one space;
+  \item an empty line starts a new paragraph;
+  \item \texttt{\textbackslash\textbackslash} forces a line break;
+  \item \texttt{\textbackslash newpage} starts a new page;
+  \item \texttt{\textbackslash noindent} suppresses paragraph indentation.
+\end{itemize}
+
+\begin{minted}[]{latex}
+First paragraph text.
+
+Second paragraph text.
+
+\noindent Third paragraph, no indent.
+\end{minted}
+
+\end{frame}
+
+\section{Mathematics}
+
+\begin{frame}[fragile]
+\frametitle{Inline and Display Math}
+\textbf{Inline math} — within text:
+\begin{minted}[]{latex}
+The equation $E = mc^2$ is famous.
+\end{minted}
+The equation $E = mc^2$ is famous.
+
+\textbf{Display math} — centered on its own line:
+\begin{minted}[]{latex}
+\[ E = mc^2 \]
+\end{minted}
+\[ E = mc^2 \]
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Numbered equation}
+\textbf{Numbered equation}:
+\begin{minted}[]{latex}
+\begin{equation}
+  E = mc^2
+  \label{eq:einstein}
+\end{equation}
+
+The equation~\eqref{eq:einstein} is famous.
+\end{minted}
+
+\vfill
+
+\begin{equation}
+  E = mc^2
+  \label{eq:einstein}
+\end{equation}
+The equation~\eqref{eq:einstein} is famous.
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Basic Math Notation}
+\begin{minted}[]{latex}
+x^2          % superscript
+x_i          % subscript
+x_{i+1}^{2} % grouped sub/superscript
+\frac{a}{b}  % fraction
+\sqrt{x}     % square root
+\sqrt[3]{x}  % cube root
+\end{minted}
+
+$$x^2 \qquad x_i \qquad x_{i+1}^{2} \qquad \frac{a}{b} \qquad \sqrt{x} \qquad \sqrt[3]{x}$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Greek Letters and Symbols}
+\begin{minted}[]{latex}
+\alpha \beta \gamma \delta \epsilon
+\theta \lambda \mu \sigma \omega
+\Gamma \Delta \Theta \Lambda \Omega
+\infty \partial \nabla \forall \exists
+\in \notin \subset \cup \cap
+\leq \geq \neq \approx \equiv
+\end{minted}
+
+$$\alpha \ \beta \ \gamma \ \delta \ \epsilon \qquad \theta \ \lambda \ \mu \ \sigma \ \omega$$
+$$\Gamma \ \Delta \ \Theta \ \Lambda \ \Omega \qquad \infty \ \partial \ \nabla \ \forall \ \exists$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sums, Products, Integrals}
+\begin{minted}[]{latex}
+\sum_{i=1}^{n} x_i
+
+\prod_{i=1}^{n} x_i
+
+\int_{a}^{b} f(x) \, dx
+
+\lim_{n \to \infty} a_n
+\end{minted}
+
+$$\sum_{i=1}^{n} x_i \qquad \prod_{i=1}^{n} x_i \qquad \int_{a}^{b} f(x) \, dx \qquad \lim_{n \to \infty} a_n$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Matrices}
+\footnotesize
+
+\begin{minted}[]{latex}
+\begin{pmatrix}
+  a & b \\
+  c & d
+\end{pmatrix}
+
+\begin{bmatrix}
+  1 & 0 \\
+  0 & 1
+\end{bmatrix}
+\end{minted}
+
+$$\begin{pmatrix} a & b \\ c & d \end{pmatrix} \qquad \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \qquad \begin{vmatrix} 1 & 0 \\ 0 & 1 \end{vmatrix}$$
+
+\begin{itemize}
+  \item \texttt{pmatrix} — round brackets;
+  \item \texttt{bmatrix} — square brackets;
+  \item \texttt{vmatrix} — determinant (vertical bars).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Aligned Equations}
+The \texttt{align} environment (from \texttt{amsmath}):
+
+\begin{minted}[]{latex}
+\begin{align}
+  f(x) &= x^2 + 2x + 1 \\
+       &= (x + 1)^2
+\end{align}
+\end{minted}
+
+\begin{itemize}
+  \item \texttt{\&} marks alignment point;
+  \item \texttt{\textbackslash\textbackslash} separates lines;
+  \item \texttt{align*} for unnumbered version.
+\end{itemize}
+
+\begin{align}
+  f(x) &= x^2 + 2x + 1 \\
+       &= (x + 1)^2
+\end{align}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Common Math Environments}
+\begin{itemize}
+  \item \texttt{equation} — single numbered equation;
+  \item \texttt{align} — multiple aligned equations;
+  \item \texttt{gather} — multiple centered equations;
+  \item \texttt{cases} — piecewise definitions:
+\end{itemize}
+
+
+\vfill
+\begin{columns}[T]
+\begin{column}{0.495\textwidth}
+
+\begin{minted}[]{latex}
+f(x) = \begin{cases}
+  1  & \text{if } x > 0 \\
+  0  & \text{if } x = 0 \\
+  -1 & \text{if } x < 0
+\end{cases}
+\end{minted}
+
+\end{column}
+
+\begin{column}{0.495\textwidth}
+
+\begin{align}
+f(x) = \begin{cases}
+  1  & \text{if } x > 0 \\
+  0  & \text{if } x = 0 \\
+  -1 & \text{if } x < 0
+\end{cases}
+\end{align}
+
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example: Machine Learning}
+A practical example — softmax function:
+
+{
+\footnotesize
+\begin{minted}{latex}
+\mathrm{softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}
+\end{minted}
+}
+
+Cross-entropy loss:
+
+\begin{minted}[]{latex}
+\mathcal{L} = -\sum_{i=1}^{N} \sum_{c=1}^{C}
+              y_{i,c} \log(\hat{y}_{i,c})
+\end{minted}
+
+$$\mathrm{softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}} \qquad \mathcal{L} = -\sum_{i=1}^{N} \sum_{c=1}^{C} y_{i,c} \log(\hat{y}_{i,c})$$
+
+\end{frame}
+
+\section{Floats: Figures and Tables}
+
+\begin{frame}[fragile]
+\frametitle{Including Figures}
+{
+\footnotesize
+\begin{minted}{latex}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{image.png}
+  \caption{Description of the figure.}
+  \label{fig:example}
+\end{figure}
+\end{minted}
+}
+
+\begin{itemize}
+  \item \texttt{[htbp]} — placement hints: here, top, bottom, page;
+  \item \texttt{\textbackslash centering} — center the figure;
+  \item \texttt{\textbackslash caption} — figure caption (auto-numbered);
+  \item \texttt{\textbackslash label} — for cross-referencing.
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Tables: example}
+{
+\footnotesize
+\begin{minted}{latex}
+\begin{table}[htbp]
+  \centering
+  \caption{Comparison of optimization methods.}
+  \label{tab:optimizers}
+  \begin{tabular}{lccc}
+    \toprule
+    Optimizer & Learning Rate & Epochs & Test Acc. \\
+    \midrule
+    SGD       & 0.01          & 100    & 0.88 \\
+    Adam      & 0.001         & 50     & 0.91 \\
+    AdamW     & 0.001         & 50     & \textbf{0.93} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{minted}
+}
+
+Use \texttt{booktabs} package for \texttt{\textbackslash toprule}, \texttt{\textbackslash midrule}, \texttt{\textbackslash bottomrule}.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Tables: example}
+\begin{table}[htbp]
+  \centering
+  \caption{Comparison of optimization methods.}
+  \label{tab:optimizers}
+  \begin{tabular}{lccc}
+    \toprule
+    Optimizer & Learning Rate & Epochs & Test Acc. \\
+    \midrule
+    SGD       & 0.01          & 100    & 0.88 \\
+    Adam      & 0.001         & 50     & 0.91 \\
+    AdamW     & 0.001         & 50     & \textbf{0.93} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Table Column Types}
+Column alignment specifiers in \texttt{\textbackslash begin\{tabular\}\{...\}}:
+
+\begin{itemize}
+  \item \texttt{l} — left-aligned;
+  \item \texttt{c} — centered;
+  \item \texttt{r} — right-aligned;
+  \item \texttt{p\{width\}} — paragraph column with fixed width;
+  \item \texttt{|} — vertical line (avoid in professional tables).
+\end{itemize}
+
+
+\vfill
+
+{
+\footnotesize
+\begin{minted}{latex}
+\begin{tabular}{l|cc|r}
+  Name & Score 1 & Score 2 & Total \\
+  \hline
+  Alice & 95 & 88 & 183 \\
+\end{tabular}
+\end{minted}
+}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Table Column Types}
+{
+\footnotesize
+\begin{minted}{latex}
+\begin{tabular}{l|cc|r}
+  Name & Score 1 & Score 2 & Total \\
+  \hline
+  Alice & 95 & 88 & 183 \\
+\end{tabular}
+\end{minted}
+}
+
+
+\vfill
+
+\begin{tabular}{l|cc|r}
+  Name & Score 1 & Score 2 & Total \\
+  \hline
+  Alice & 95 & 88 & 183 \\
+\end{tabular}
+
+\end{frame}
+
+\section{Cross-references and Citations}
+
+\begin{frame}[fragile]
+\frametitle{Labels and References}
+\LaTeX\ can reference any numbered element:
+
+\begin{minted}[]{latex}
+\section{Introduction}
+\label{sec:intro}
+
+As shown in Figure~\ref{fig:arch}
+and Equation~\eqref{eq:loss}
+(see Section~\ref{sec:intro}).
+\end{minted}
+
+\begin{itemize}
+  \item \texttt{\textbackslash label\{...\}} — place after \texttt{\textbackslash caption}, \texttt{\textbackslash section}, or in an equation;
+  \item \texttt{\textbackslash ref\{...\}} — produces the number;
+  \item \texttt{\textbackslash eqref\{...\}} — equation reference with parentheses;
+  \item \texttt{\textasciitilde} — non-breaking space before the reference.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Bibliography with BibTeX}
+Create a \texttt{.bib} file:
+
+\begin{minted}[]{bibtex}
+@article{vaswani2017attention,
+  title={Attention is all you need},
+  author={Vaswani, Ashish and others},
+  journal={NeurIPS},
+  year={2017}
+}
+\end{minted}
+
+In the document:
+\begin{minted}[]{latex}
+Transformers~\cite{vaswani2017attention}
+have revolutionized NLP.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Citation Commands}
+Basic commands:
+\begin{itemize}
+  \item \texttt{\textbackslash cite\{key\}} — \texttt{[1]} or (Author, Year);
+  \item \texttt{\textbackslash cite\{key1, key2\}} — multiple citations.
+\end{itemize}
+
+With \texttt{natbib} package:
+\begin{itemize}
+  \item \texttt{\textbackslash citet\{key\}} — textual: Author (Year);
+  \item \texttt{\textbackslash citep\{key\}} — parenthetical: (Author, Year);
+  \item \texttt{\textbackslash citep[see][]\{key\}} — (see Author, Year).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Compilation with References}
+To resolve all references:
+
+\begin{minted}[]{bash}
+pdflatex document
+bibtex document
+pdflatex document
+pdflatex document
+\end{minted}
+
+Multiple passes needed because:
+\begin{enumerate}
+  \item first pass collects labels and citations;
+  \item \texttt{bibtex} generates bibliography;
+  \item second pass inserts references;
+  \item third pass resolves page numbers.
+\end{enumerate}
+
+\end{frame}
+
+\section{Useful Environments and Tips}
+
+\begin{frame}[fragile]
+\frametitle{Code Listings}
+Using the \texttt{listings} package:
+
+\begin{minted}[]{latex}
+\begin{lstlisting}[language=Python]
+def hello():
+    print("Hello, World!")
+\end{lstlisting}
+\end{minted}
+
+Or the \texttt{minted} package (requires Python's Pygments):
+
+\begin{verbatim}
+\begin{minted}{python}
+def hello():
+    print("Hello, World!")
+\end{minted}
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Theorem-like Environments}
+Define in the preamble:
+\begin{minted}[]{latex}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\end{minted}
+
+Use in the document:
+\begin{minted}[]{latex}
+\begin{theorem}
+  For all $n \geq 1$:
+  $\sum_{i=1}^n i = \frac{n(n+1)}{2}$.
+\end{theorem}
+\begin{proof}
+  By induction on $n$...
+\end{proof}
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Theorem-like Environments}
+\begin{theorem}
+  For all $n \geq 1$:
+  $\sum_{i=1}^n i = \frac{n(n+1)}{2}$.
+\end{theorem}
+\begin{proof}
+  By induction on $n$...
+\end{proof}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Common Mistakes}
+\textbf{Avoid these pitfalls}:
+\begin{itemize}
+  \item forgetting \texttt{\{\}} for multi-character sub/superscripts: \texttt{x\^{}10} vs. \texttt{x\^{}\{10\}}:
+\begin{itemize}
+  \item $x^10$ vs. $x^{10}$
+\end{itemize}
+
+  \item using \texttt{"} instead of \texttt{} and \texttt{''} for quotes;
+  \item not escaping special characters: \texttt{50\%} should be \texttt{50\textbackslash\%};
+  \item placing \texttt{\textbackslash label} before \texttt{\textbackslash caption} (label will be wrong);
+  \item ignoring warnings about undefined references.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Useful Commands to Know}
+\begin{minted}[]{latex}
+\phantom{text}       % invisible space
+\vspace{1cm}         % vertical space
+\hspace{1cm}         % horizontal space
+\textcolor{red}{txt} % colored text (xcolor)
+\url{https://...}    % typeset URL (hyperref)
+\footnote{text}      % footnote
+\todo{Fix this}      % margin note (todonotes)
+\end{minted}
+
+\end{frame}
+
+\section{\LaTeX\ Programming}
+
+\begin{frame}[fragile]
+\frametitle{Custom Commands: \texttt{\textbackslash newcommand}}
+Define reusable shorthands — especially useful for math notation:
+
+\begin{minted}[]{latex}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+\newcommand{\inner}[2]{\left\langle #1, #2 \right\rangle}
+\end{minted}
+
+Usage:
+\begin{minted}[]{latex}
+Let $f : \R^n \to \R$ and $x \in \R^n$.
+Then $\norm{x} = \sqrt{\inner{x}{x}}$.
+\end{minted}
+
+Let $f : \R^n \to \R$ and $x \in \R^n$.
+Then $\norm{x} = \sqrt{\inner{x}{x}}$.
+
+Define once in the preamble, use everywhere — change notation globally by editing one line.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Custom Commands: optional arguments}
+\texttt{\textbackslash newcommand} supports optional arguments with defaults:
+
+\begin{minted}[]{latex}
+% [1] = 1 argument, [L^2] = default value
+\newcommand{\norm}[2][L^2]{%
+  \left\| #2 \right\|_{#1}%
+}
+\end{minted}
+
+\begin{minted}[]{latex}
+$\norm{f}$            => \left\|f\right\|_{L^2}
+$\norm[L^\infty]{f}$  => \left\|f\right\|_{L^\infty}
+\end{minted}
+
+\begin{center}
+$\norm{f}$ \qquad $\norm[L^\infty]{f}$
+\end{center}
+
+
+\vfill
+
+\begin{itemize}
+  \item \texttt{\#1} — first argument (optional, with default);
+  \item \texttt{\#2} — second argument (mandatory);
+  \item \texttt{\%} at end of line — suppress unwanted whitespace.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{\texttt{\textbackslash renewcommand}}
+Override existing commands:
+
+\begin{minted}[]{latex}
+% Change equation numbering to include section
+\renewcommand{\theequation}{%
+  \thesection.\arabic{equation}%
+}
+
+% Redefine abstract name
+\renewcommand{\abstractname}{Executive Summary}
+\end{minted}
+
+\begin{itemize}
+  \item Use \texttt{\textbackslash renewcommand} for commands that already exist;
+  \item use \texttt{\textbackslash newcommand} for new commands — it errors if the command already exists (safety check).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Custom Environments}
+\texttt{\textbackslash newenvironment\{name\}[args]\{begin-code\}\{end-code\}}:
+
+\begin{minted}[]{latex}
+\newenvironment{important}{%
+  \begin{center}
+  \begin{minipage}{0.9\textwidth}
+  \textbf{Important:} \itshape
+}{%
+  \end{minipage}
+  \end{center}
+}
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Custom Environments}
+Usage:
+\begin{minted}[]{latex}
+\begin{important}
+  Always compile twice to resolve references.
+\end{important}
+\end{minted}
+
+
+\vfill
+
+Result:
+\begin{important}
+  Always compile twice to resolve references.
+\end{important}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Custom Environments with Arguments}
+Environments can also accept arguments:
+
+\begin{minted}[]{latex}
+\newenvironment{method}[1]{%
+  \begin{block}{Method: #1}
+}{%
+  \end{block}
+}
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Custom Environments with Arguments}
+\begin{minted}[]{latex}
+\begin{method}{Gradient Descent}
+  Update rule: $\theta \leftarrow \theta
+    - \alpha \nabla_\theta \mathcal{L}$
+\end{method}
+\end{minted}
+
+
+\vfill
+
+\begin{method}{Gradient Descent}
+  Update rule: $\theta \leftarrow \theta - \alpha \nabla_\theta \loss$
+\end{method}
+
+Combine with \texttt{\textbackslash newcommand} to build a consistent notation system for your paper or thesis.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Counters}
+\LaTeX\ uses counters for automatic numbering:
+
+\begin{minted}[]{latex}
+\newcounter{example}[section]  % reset per section
+
+\newcommand{\example}{%
+  \stepcounter{example}%
+  \textbf{Example~\thesection.\theexample}%
+}
+\end{minted}
+
+Useful counter commands:
+\begin{itemize}
+  \item \texttt{\textbackslash newcounter\{name\}[parent]} — create a counter;
+  \item \texttt{\textbackslash setcounter\{name\}\{value\}} — set value;
+  \item \texttt{\textbackslash stepcounter\{name\}} — increment by 1;
+  \item \texttt{\textbackslash arabic\{name\}}, \texttt{\textbackslash roman\{name\}} — display formats.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Lengths}
+Control spacing and sizes with length registers:
+
+\begin{minted}[]{latex}
+\newlength{\mywidth}
+\setlength{\mywidth}{0.45\textwidth}
+\addtolength{\mywidth}{-1cm}
+\end{minted}
+
+\begin{itemize}
+  \item \texttt{\textbackslash newlength} — define a length register;
+  \item \texttt{\textbackslash setlength} — assign a value;
+  \item \texttt{\textbackslash addtolength} — add to current value;
+  \item units: \texttt{pt}, \texttt{cm}, \texttt{em}, \texttt{ex}, or relative like \texttt{0.5\textbackslash textwidth}.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Conditionals}
+The \texttt{ifthen} package provides readable conditionals:
+
+\begin{minted}[]{latex}
+\usepackage{ifthen}
+
+\newcommand{\grade}[1]{%
+  \ifthenelse{#1 > 89}{A}{%
+  \ifthenelse{#1 > 79}{B}{%
+  \ifthenelse{#1 > 69}{C}{F}}}%
+}
+\end{minted}
+
+
+\vfill
+\begin{columns}
+\begin{column}{0.495\textwidth}
+
+\begin{minted}[]{latex}
+Score 95: \grade{95}
+Score 72: \grade{72}
+\end{minted}
+\end{column}
+
+\begin{column}{0.495\textwidth}
+Score 95: \grade{95} \\ Score 72: \grade{72}
+
+\end{column}
+\end{columns}
+
+\vfill
+
+Also available: \texttt{\textbackslash ifdefined}, \texttt{\textbackslash ifx} (low-level \TeX\ conditionals) and the \texttt{etoolbox} package for modern alternatives.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Loops with \texttt{pgffor}}
+The \texttt{pgffor} package (part of TikZ/PGF) provides \texttt{\textbackslash foreach}:
+
+{
+\footnotesize
+\begin{minted}{latex}
+\usepackage{pgffor}
+
+\foreach \x in {1,2,...,5} {
+  Item \x;\,
+}
+
+\foreach \name/\score in {
+  Alice/95, Bob/87, Carol/91} {
+  \name: \score\\
+}
+\end{minted}
+}
+
+\foreach \x in {1,2,...,5} {Item \x;\,}
+
+Useful for generating repetitive content: tables, TikZ diagrams, lists.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Practical Example: Paper Preamble}
+\footnotesize
+
+A real-world preamble with custom commands:
+
+{
+\footnotesize
+\begin{minted}{latex}
+% Number sets
+\newcommand{\R}{\mathbb{R}}
+% Operators
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\KL}{KL}
+% Shortcuts
+\newcommand{\loss}{\mathcal{L}}
+\newcommand{\model}{f_\theta}
+\newcommand{\dataset}{\mathcal{D}}
+% Norms and brackets
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\end{minted}
+}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Practical Example: Usage}
+With the preamble above, you write concise math:
+
+{
+\footnotesize
+\begin{minted}{latex}
+\begin{align*}
+  \loss(\theta) &= \E_{(x,y) \sim \dataset}
+                     \norm{\model(x) - y}^2;\\
+  \theta^* &= \argmin_\theta \loss(\theta).
+\end{align*}
+\end{minted}
+}
+
+\begin{align*}
+  \loss(\theta) &= \E_{(x,y) \sim \dataset} \norm{\model(x) - y}^2;\\
+  \theta^* &= \argmin_\theta \loss(\theta).
+\end{align*}
+
+Readable source, beautiful output — and easy to change notation globally.
+
+\end{frame}
+
+\section{Conclusion}
+
+\begin{frame}[fragile]
+\frametitle{Summary}
+\LaTeX\ is essential for academic CS writing:
+\begin{itemize}
+  \item \textbf{document structure}: \texttt{\textbackslash documentclass}, preamble, environments;
+  \item \textbf{math typesetting}: inline \texttt{\$...\$}, display \texttt{\textbackslash[...\textbackslash]}, \texttt{align};
+  \item \textbf{floats}: \texttt{figure}, \texttt{table} with \texttt{\textbackslash caption} and \texttt{\textbackslash label};
+  \item \textbf{references}: \texttt{\textbackslash label}/\texttt{\textbackslash ref}, BibTeX for citations;
+  \item \textbf{packages}: extend functionality as needed.
+\end{itemize}
+\end{frame}
+
+
+
+
+\end{document}
