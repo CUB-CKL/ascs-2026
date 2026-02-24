@@ -11,6 +11,13 @@
 \DeclareMathOperator*{\E}{\mathbb{E}}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
+\DeclareMathOperator{\D}{\mathbb{D}}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\KL}{KL}
+
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\norm}[2][L^2]{%
@@ -415,8 +422,137 @@ Cross-entropy loss:
               y_{i,c} \log(\hat{y}_{i,c})
 ```
 
+~~~align*
+\mathrm{softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}} \qquad \mathcal{L} = -\sum_{i=1}^{N} \sum_{c=1}^{C} y_{i,c} \log(\hat{y}_{i,c})
 ~~~
-$$\mathrm{softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}} \qquad \mathcal{L} = -\sum_{i=1}^{N} \sum_{c=1}^{C} y_{i,c} \log(\hat{y}_{i,c})$$
+
+### Math Alphabets
+
+Different letter styles carry different meaning:
+
+```latex
+\mathbb{R}    % blackboard bold
+\mathcal{L}   % calligraphic
+\mathbf{x}    % bold upright
+\boldsymbol{\theta}  % bold italic
+\mathit{MSE}  % italic
+\mathrm{softmax}     % upright roman
+```
+
+~~~align*
+\mathbb{R} \quad \mathcal{L} \quad \mathbf{x} \quad \boldsymbol{\theta} \quad \mathit{MSE} \quad \mathrm{softmax}
+~~~
+
+Prefer `\texttt{\textbackslash DeclareMathOperator}` over `\texttt{\textbackslash mathrm}` for named functions.
+
+### Auto-sizing Delimiters
+
+Use `\texttt{\textbackslash left}` and `\texttt{\textbackslash right}` to make delimiters scale with content:
+
+```latex
+\left( \frac{a}{b} \right)
+\left[ \sum_{i=1}^n x_i \right]
+\left\{ x \in \R \mid x > 0 \right\}
+\left\| A \right\|_F
+\left| \sum_i \frac{1}{\sqrt{a_i}} \psi_i \right>
+```
+
+~~~align*
+\left( \frac{a}{b} \right) \qquad \left[ \sum_{i=1}^n x_i \right] \qquad
+  \left\{ x \in \R \mid x > 0 \right\} \quad \left| \sum_i \frac{1}{\sqrt{a_i}} \psi_i \right>
+~~~
+
+### Auto-sizing Delimiters
+
+`\texttt{\textbackslash middle}` scales a delimiter in the middle:
+
+```latex
+P\left( A \;\middle|\; B \right)
+\mathrm{KL}\left(P \;\middle\|\; Q\right)
+\left< \sum_i \psi_i\;\middle|\;\sum_i \phi_i \right>
+```
+
+~~~gather*
+P\left( A \;\middle|\; B \right)\\
+\mathrm{KL}\left(P \;\middle\|\; Q\right)\\
+\left< \sum_i \psi_i\;\middle|\;\sum_i \phi_i \right>
+~~~
+
+`\texttt{\textbackslash right.}` — invisible right delimiter.
+
+### Auto-sizing Delimiters
+
+`\texttt{\textbackslash left}` and `\texttt{\textbackslash right}` automatically adjusts with nesting:
+
+```latex
+L(\theta) = \prod_j \left[ \frac{1}{Z_j} \left(
+  \sum_i f_j\left(\frac{P(X)}{Q(X)}\right)
+\right)\right]
+```
+
+~~~align*
+L(\theta) = \prod_j \left[ \frac{1}{Z_j} \left(
+  \sum_i f_j\left(\frac{P(X)}{Q(X)}\right)
+\right)\right]
+~~~
+
+### Equation Annotations
+
+Annotate parts of an equation with `\texttt{\textbackslash underbrace}` and `\texttt{\textbackslash overbrace}`:
+
+```latex
+\underbrace{x^\top W x}_{\text{quadratic form}}
+  + \overbrace{\lambda \|\theta\|^2}^{\text{regularizer}}
+```
+
+~~~align*
+\underbrace{x^\top W x}_{\text{quadratic form}} + \overbrace{\lambda \|\theta\|^2}^{\text{regularizer}}
+~~~
+
+### Equation Annotations
+
+Place symbols above or below with `\texttt{\textbackslash overset}` and `\texttt{\textbackslash underset}`:
+
+```latex
+A \overset{\text{def}}{=} B
+x \underset{n \to \infty}{\longrightarrow} 0
+```
+
+~~~align*
+A \overset{\text{def}}{=} B \qquad x \underset{n \to \infty}{\longrightarrow} 0
+~~~
+
+### Math Spacing
+
+\TeX\ sometimes needs spacing hints inside math:
+~~~
+\begin{tabular}{lll}
+  \toprule
+  Command & Size & Typical use \\
+  \midrule
+  \texttt{\textbackslash!}     & $-\tfrac{3}{18}$\,mu & tighten adjacent symbols \\
+  \texttt{\textbackslash,}     & $\tfrac{3}{18}$\,mu  & before $\mathrm{d}x$ in integrals \\
+  \texttt{\textbackslash:}     & $\tfrac{4}{18}$\,mu  & binary operators \\
+  \texttt{\textbackslash;}     & $\tfrac{5}{18}$\,mu  & before/after text in math \\
+  \texttt{\textbackslash quad} & 1\,em                & separating cases or labels \\
+  \texttt{\textbackslash qquad}& 2\,em                & wide alignment gaps \\
+  \bottomrule
+\end{tabular}
+~~~
+
+### Math Spacing: common patterns
+```latex
+\int_a^b f(x) \, dx        % thin space before dx
+\mathrm{d}x                % upright d
+f : \R^n \to \R            % colon in function type
+P\left(A \mid B\right)     % \mid gives correct spacing
+```
+
+~~~gather*
+\int_a^b f(x) \, dx\\
+\mathrm{d}x \\
+f : \R^n \to \R \\
+P\left(A \mid B\right)
 ~~~
 
 ## Floats: Figures and Tables
@@ -688,9 +824,159 @@ Use in the document:
 
 ## \LaTeX\ Programming
 
+### \TeX: the Engine
+
+\LaTeX\ is a **macro package** built on top of \TeX:
+
+- \TeX\ — a Turing-complete macro expansion language + typesetting engine (Knuth, 1978);
+- \LaTeX\ provides a high-level API: `\texttt{\textbackslash begin}`, `\texttt{\textbackslash newcommand}`, `\texttt{\textbackslash usepackage}`, ...;
+- understanding \TeX\ fundamentals helps when \LaTeX\ macros need to be more powerful.
+
+- - -
+
+**Engine family**: pdf\TeX\ $\cdot$ Xe\TeX\ $\cdot$ Lua\TeX\ — all extend the original \TeX\ engine.
+
+**Macro packages**: plain \TeX, \LaTeX, Con\TeX t — different macro layers on the same engine.
+
+### Tokens and Category Codes
+
+\TeX\ reads input character by character and assigns each a **category code** (catcode):
+
+- **catcode 0** — escape character `\texttt{\textbackslash}`: starts a control sequence;
+- **catcode 1/2** — begin/end group `\texttt{\{}` `\texttt{\}}`: creates a local scope;
+- **catcode 3** — math shift `\texttt{\$}`: enters/exits math mode;
+- **catcode 11** — letter: part of a control sequence name;
+- **catcode 14** — comment `\texttt{\%}`: rest of line is ignored.
+
+A **control sequence** like `\texttt{\textbackslash frac}` is a single token regardless of its length.
+
+Catcodes can be changed — this is how `\texttt{\textbackslash verb}` works: it temporarily makes `\texttt{\textbackslash}` an ordinary character.
+
+### Groups and Scoping
+
+`\texttt{\{\}}` create a **local group** — all assignments inside are reverted on exit:
+
+```latex
+{\color{red} red text}    % color reverts after }
+{\large big text}          % font size reverts after }
+{\def\x{local}}            % \x is undefined after }
+```
+
+All \TeX\ assignments are **local by default**:
+- `\texttt{\textbackslash setlength}`, `\texttt{\textbackslash def}`, font commands, color, etc.;
+- `\texttt{\textbackslash global}` prefix makes an assignment permanent (use sparingly).
+
+This is why font/color commands are typically written as `\texttt{\{}\texttt{\textbackslash large} text\texttt{\}}` — no explicit reset needed.
+
+### `\texttt{\textbackslash def}`: the TeX Primitive
+
+The primitive `\texttt{\textbackslash def}` defines macros directly:
+
+```latex
+\def\R{\mathbb{R}}                       % no arguments
+\def\norm#1{\left\| #1 \right\|}         % one argument
+\def\pair#1#2{\langle #1, #2 \rangle}    % two arguments
+```
+
+- - -
+
+`\texttt{\textbackslash def}` vs `\texttt{\textbackslash newcommand}`:
+
+- `\texttt{\textbackslash def}` silently **overwrites** any existing command — dangerous;
+- `\texttt{\textbackslash newcommand}` **errors** if the command already exists — safe;
+- `\texttt{\textbackslash renewcommand}` explicitly signals the intent to redefine.
+
+Use `\texttt{\textbackslash newcommand}` in \LaTeX\ documents; `\texttt{\textbackslash def}` in low-level macro code.
+
+### Expansion
+
+\TeX\ processes tokens in two phases:
+
+1. **Expansion**: expandable tokens (macros, `\texttt{\textbackslash if...}`) are replaced by their definition, repeatedly, until only unexpandable tokens remain;
+2. **Execution**: unexpandable tokens are executed (assignments, typesetting).
+
+`\texttt{\textbackslash expandafter}` expands the token *after* the next one first:
+
+```latex
+\def\hello{world}
+\expandafter\MakeUppercase\expandafter{\hello}
+% equivalent to: \MakeUppercase{world}
+```
+
+`\texttt{\textbackslash noexpand}`: suppresses expansion of the following token.
+
+### `\texttt{\textbackslash edef}`: Expanding Definition
+
+`\texttt{\textbackslash edef}` expands the replacement text **at definition time**:
+
+```latex
+\newcommand{\myname}{Alice}
+\edef\greeting{Hello, \myname!}
+% \greeting is now literally "Hello, Alice!"
+
+\renewcommand{\myname}{Bob}
+\greeting      % still outputs: Hello, Alice!
+```
+
+Compare with `\texttt{\textbackslash def}` / `\texttt{\textbackslash newcommand}` — expands at **use time**:
+
+```latex
+\newcommand{\greeting}{Hello, \myname!}
+\renewcommand{\myname}{Bob}
+\greeting      % outputs: Hello, Bob!
+```
+
+`\texttt{\textbackslash xdef}` = `\texttt{\textbackslash global\textbackslash edef}` (global expanding def).
+
+### Box Model
+
+Everything in \TeX\ is a **box** with width, height, and depth:
+
+- **`\texttt{\textbackslash hbox\{...\}}`** (`\texttt{\textbackslash mbox}`) — horizontal box, no line breaks inside;
+- **`\texttt{\textbackslash vbox\{...\}}`** (`\texttt{minipage}`, `\texttt{parbox}`) — vertical box;
+- boxes can be nested, measured, and positioned freely.
+
+```latex
+\makebox[3cm][c]{centered}     % fixed-width centered box
+\framebox{framed content}       % box with visible border
+\raisebox{0.5ex}{raised text}   % shift box up/down
+```
+
+- - -
+
+\LaTeX\ builds lines from **horizontal lists** of boxes and **glue** (stretchable/shrinkable space). Tables, columns, and figures are all composed of boxes.
+
+### Low-level Conditionals
+
+\TeX\ primitives for conditionals (no package needed):
+
+```latex
+\ifnum\value{page} > 1
+  Not the first page.
+\fi
+
+\ifdim\textwidth > 10cm
+  Wide page.
+\else
+  Narrow page.
+\fi
+
+\ifx\myvar\undefined
+  \myvar is not defined.
+\fi
+```
+
+### Low-level Conditionals
+
+- `\texttt{\textbackslash ifnum}`: integer comparison (`\texttt{<}`, `\texttt{>}`, `\texttt{=}`);
+- `\texttt{\textbackslash ifdim}`: dimension comparison;
+- `\texttt{\textbackslash ifx}`: tests if two tokens identical;
+- `\texttt{\textbackslash if}`: compare character codes of two tokens;
+- every conditional must end with `\texttt{\textbackslash fi}`.
+
 ### Custom Commands: `\texttt{\textbackslash newcommand}`
 
-Define reusable shorthands — especially useful for math notation:
+Define reusable shorthands, especially useful for math notation:
 
 ```latex
 \newcommand{\R}{\mathbb{R}}
@@ -710,7 +996,43 @@ Let $f : \R^n \to \R$ and $x \in \R^n$.
 Then $\norm{x} = \sqrt{\inner{x}{x}}$.
 ~~~
 
-Define once in the preamble, use everywhere — change notation globally by editing one line.
+Define once in the preamble, use everywhere, change notation globally by editing one line.
+
+### `\texttt{amsmath}` Operator Commands
+
+`\texttt{\textbackslash DeclareMathOperator}` defines named operators typeset in upright font:
+
+```latex
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\KL}{KL}
+```
+
+~~~align
+\argmax_\theta \loss(\theta) \qquad \rank(A) \qquad \tr(M) \qquad \KL(P \| Q)
+~~~
+
+### `\texttt{amsmath}` Operator Commands
+
+The `\texttt{*}` variant allows limits above/below in display math:
+```latex
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+```
+~~~align*
+\E_{x \sim p} f(x) \qquad \argmin_{\theta \in \Theta} \loss(\theta)
+~~~
+
+Use `\texttt{\textbackslash DeclareMathOperator}` instead of `\texttt{\textbackslash mathrm}` or
+`\texttt{\textbackslash text}`, it handles spacing around the operator correctly:
+~~~align*
+  \text{\textbackslash DeclareMathOperator} &\quad \text{\textbackslash mathrm};\\
+  \argmax_{\theta \in \Theta} \loss(\theta) &\quad \mathrm{arg\,max}_{\theta \in \Theta} \loss(\theta);\\
+  \argmin_{\theta \in \Theta} \loss(\theta) &\quad \mathrm{arg\,min}_{\theta \in \Theta} \loss(\theta);\\
+  \D_{x \sim p} f(x) &\qquad \mathbb{D}_{x \sim p} f(x).
+~~~
 
 ### Custom Commands: optional arguments
 
@@ -736,7 +1058,7 @@ $\norm{f}$ \qquad $\norm[L^\infty]{f}$
 
 - `\texttt{\#1}` — first argument (optional, with default);
 - `\texttt{\#2}` — second argument (mandatory);
-- `\texttt{\%}` at end of line — suppress unwanted whitespace.
+- `\texttt{\%}` at end of line, suppress unwanted whitespace.
 
 ### `\texttt{\textbackslash renewcommand}`
 
@@ -753,7 +1075,7 @@ Override existing commands:
 ```
 
 - Use `\texttt{\textbackslash renewcommand}` for commands that already exist;
-- use `\texttt{\textbackslash newcommand}` for new commands — it errors if the command already exists (safety check).
+- use `\texttt{\textbackslash newcommand}` for new commands, it errors if the command already exists (safety check).
 
 ### Custom Environments
 
