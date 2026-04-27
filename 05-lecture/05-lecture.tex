@@ -1,0 +1,803 @@
+\documentclass[]{beamer}
+
+\usetheme{metropolis}
+\metroset{progressbar=frametitle}
+\usefonttheme[onlymath]{serif}
+
+\usepackage[none]{hyphenat}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{minted}
+\author{Maxim Borisyak, Claude Code, Andrey Ustyuzhanin}
+\institute{Constructor University Bremen}
+\usepackage{booktabs}
+
+
+
+
+\begin{document}
+
+
+
+\title{Reviewing Scientific Articles}
+
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+
+\section{The Peer Review Process}
+
+\begin{frame}[fragile]
+\frametitle{What is Peer Review?}
+\textbf{Peer review}: evaluation of scientific work by experts in the same field before publication.
+
+Occurs at:
+\begin{itemize}
+  \item \textbf{conference submissions} (1-3 weeks per review);
+  \item \textbf{journal submissions} (months to years);
+  \item \textbf{grant applications} (funding agencies);
+  \item \textbf{community code review} (open source).
+\end{itemize}
+
+Reviewers are typically unpaid volunteers.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Goals of Peer Review}
+Reviewers assess:
+\begin{enumerate}
+  \item \textbf{correctness}: are the claims true and properly justified?
+  \item \textbf{novelty}: does this advance the field?
+  \item \textbf{significance}: does this matter?
+  \item \textbf{clarity}: is the work well-presented?
+  \item \textbf{rigor}: is the methodology sound?
+\end{enumerate}
+
+Peer review is not:
+\begin{itemize}
+  \item \textbf{exhaustive verification} — reviewers check plausibility, not every calculation;
+  \item \textbf{guaranteed to catch fraud} — but it catches many honest mistakes;
+  \item \textbf{democratizing} — not all reviewers are equally competent.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Peer Review is Imperfect}
+\textbf{Known limitations}:
+\begin{itemize}
+  \item major errors slip through (see Hwang Woo-suk, Stapel, Schön);
+  \item bias exists — reviewers favor citations of their own work;
+  \item reviewer selection affects outcome (expertise, competition);
+  \item conflicts of interest are underreported;
+  \item publication bias — negative results rarely appear.
+\end{itemize}
+
+Despite flaws, peer review remains the best mechanism we have.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Your Role as a Reviewer}
+You are a \textbf{critical reader}, not an auditor:
+\begin{itemize}
+  \item catch obvious errors and inconsistencies;
+  \item identify questionable claims that lack support;
+  \item spot methodological red flags;
+  \item assess clarity and organization;
+  \item provide constructive feedback.
+\end{itemize}
+
+You are \textbf{not} expected to:
+\begin{itemize}
+  \item verify every calculation by hand;
+  \item reproduce all experiments (though you should check design);
+  \item detect all fraud (that's nearly impossible);
+  \item gatekeep for competitive reasons.
+\end{itemize}
+
+\end{frame}
+
+\section{Reading a Paper: Framework}
+
+\begin{frame}[fragile]
+\frametitle{The Reading Strategy: First Pass}
+\textbf{First pass} (10-20 minutes):
+\begin{itemize}
+  \item title, abstract, headings, conclusion;
+  \item figures and tables (captions only);
+  \item determine: is this relevant to me? what's the scope?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Reading Strategy: Detailed Passes}
+\textbf{Second pass} (main evaluation):
+\begin{itemize}
+  \item introduction: problem and novelty;
+  \item method: does approach make sense?
+  \item results: are they convincing?
+\end{itemize}
+
+\textbf{Third pass} (if needed):
+\begin{itemize}
+  \item proofs or calculations;
+  \item experimental design details.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Introduction and Motivation}
+\textbf{What to check}:
+\begin{itemize}
+  \item \textbf{clarity of problem}: can you state what's being solved?
+  \item \textbf{motivation}: why does this matter?
+  \item \textbf{related work}: relevant prior art acknowledged?
+  \item \textbf{claimed novelty}: what is genuinely new?
+\end{itemize}
+
+\textbf{Red flags}:
+\begin{itemize}
+  \item problem poorly motivated;
+  \item prior work omitted or misrepresented;
+  \item novelty claims without citing prior work.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Method/Theory Section}
+For \textbf{empirical papers}:
+\begin{itemize}
+  \item algorithm description clear and complete?
+  \item hyperparameters fully specified?
+  \item reproducible from description?
+\end{itemize}
+
+For \textbf{theoretical papers}:
+\begin{itemize}
+  \item definitions precise and match standard notation?
+  \item assumptions clearly stated and reasonable?
+  \item proofs logical and complete?
+\end{itemize}
+
+\textbf{Red flags}:
+\begin{itemize}
+  \item vague algorithm description;
+  \item missing hyperparameters;
+  \item theorems without proofs (or deferred to missing appendix).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Experimental Setup: Baselines and Data}
+For ML/systems papers:
+
+\textbf{Baselines}:
+\begin{itemize}
+  \item fair comparison? (same tuning effort)
+  \item recent and from reputable implementations?
+\end{itemize}
+
+\textbf{Datasets}:
+\begin{itemize}
+  \item public/standard or custom?
+  \item data leakage between train/test?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Experimental Setup: Metrics and Design}
+\textbf{Metrics}:
+\begin{itemize}
+  \item appropriate for problem?
+  \item multiple metrics or cherry-picked?
+\end{itemize}
+
+\textbf{Design}:
+\begin{itemize}
+  \item multiple runs with error bars?
+  \item significance testing?
+  \item complete ablations?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Results and Claims}
+\textbf{What to check}:
+\begin{itemize}
+  \item improvements meaningful or within noise?
+  \item p-values, confidence intervals reported?
+  \item all runs reported or cherry-picked?
+  \item conclusions match the data?
+\end{itemize}
+
+\textbf{Red flags}:
+\begin{itemize}
+  \item tiny improvements (0.5%) without error bars;
+  \item inconsistent across datasets;
+  \item "state-of-the-art" vs. outdated baselines;
+  \item missing or incomplete ablations.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Figures and Tables: What to Look For}
+\textbf{Good figures}:
+\begin{itemize}
+  \item clear labels, legend, caption;
+  \item error bars visible;
+  \item caption explains content.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Figures and Tables: Red Flags}
+\textbf{Suspicious patterns}:
+\begin{itemize}
+  \item unexplained discontinuities;
+  \item overly smooth curves (interpolation?);
+  \item cherry-picked time windows;
+  \item exaggerated y-axis scales;
+  \item missing error bars;
+  \item identical noise patterns across experiments.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Conclusion and Discussion}
+\textbf{What to check}:
+\begin{itemize}
+  \item claims match the results?
+  \item limitations acknowledged (or omitted)?
+  \item future work realistic or hand-waving?
+  \item code/data availability addressed?
+\end{itemize}
+
+\textbf{Red flags}:
+\begin{itemize}
+  \item conclusions broader than evidence;
+  \item limitations absent or buried;
+  \item critical validations deferred to "future work";
+  \item reproducibility not addressed.
+\end{itemize}
+
+\end{frame}
+
+\section{Red Flags and Suspicious Practices}
+
+\begin{frame}[fragile]
+\frametitle{Suspicious Result Patterns}
+\textbf{Warning signs}:
+
+{\tiny
+\begin{tabular}{p{3.8cm} p{6.2cm}}
+\toprule
+\textbf{Pattern} & \textbf{Why suspicious} \\
+\midrule
+All $p < 0.05$ & Multiple tests produce false positives by chance \\
+Improvements only on custom data & Overfitting to domain \\
+Monotonic improvement with size & May be cherry-picked curve \\
+One metric wins, others don't & Metric gaming \\
+Only old baselines & Recent ones might be better \\
+\bottomrule
+\end{tabular}
+}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Statistical Red Flags: p-Hacking}
+\textbf{p-hacking indicators}:
+\begin{itemize}
+  \item many tests, only positive ones reported;
+  \item $p$-values just below 0.05 (not $< 0.01$);
+  \item no multiple comparisons correction;
+  \item no error bars or significance tests.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Statistical Red Flags: Misuse}
+\textbf{Underpowered studies}:
+\begin{itemize}
+  \item small samples without power discussion;
+  \item single runs (no replication).
+\end{itemize}
+
+\textbf{Misused language}:
+\begin{itemize}
+  \item "significant" (statistical vs. practical);
+  \item "95\% chance" (backwards probability).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Methodological Red Flags: Leakage}
+\textbf{Data leakage}:
+\begin{itemize}
+  \item hyperparameters tuned on test set;
+  \item test set visible during training;
+  \item test statistics in preprocessing;
+  \item global preprocessing (off-the-shelf).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Methodological Red Flags: Fairness and Robustness}
+\textbf{Unfair comparisons}:
+\begin{itemize}
+  \item baselines not publicly available or tuned;
+  \item different preprocessing for method vs. baselines.
+\end{itemize}
+
+\textbf{Suspicious generalization}:
+\begin{itemize}
+  \item works only on specific domain;
+  \item improvements vanish on other datasets;
+  \item robustness not tested.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Visual Red Flags}
+Watch for suspicious \textbf{figures and images}:
+
+\textbf{Computer-generated results}:
+\begin{itemize}
+  \item identical noise patterns in figures claiming independent experiments;
+  \item pixel-perfect repetition (copy-paste);
+  \item discontinuities that don't match stated methodology;
+  \item too smooth or too regular (curve fitting or interpolation on test data).
+\end{itemize}
+
+\textbf{Example}: Jan Hendrik Schön's papers had identical noise patterns in plots across supposedly independent experiments.
+
+\textbf{Documentation red flags}:
+\begin{itemize}
+  \item captions that don't match the figure content;
+  \item axis labels missing or inconsistent;
+  \item figure quality that suggests poor quality control;
+  \item legends that don't match the plotted lines.
+\end{itemize}
+
+\end{frame}
+
+\section{Computer Science and Machine Learning Specifics}
+
+\begin{frame}[fragile]
+\frametitle{Common ML Pitfalls}
+\textbf{Neural networks should report}:
+\begin{itemize}
+  \item architecture (layers, activations, dropout);
+  \item initialization scheme;
+  \item optimizer and learning rate;
+  \item number of runs (best/mean/median?);
+  \item how hyperparameters were chosen.
+\end{itemize}
+
+\textbf{Deep learning red flags}:
+\begin{itemize}
+  \item batch size not reported;
+  \item learning rate defaults without justification;
+  \item single initialization;
+  \item no ablation of architecture components.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Benchmark Gaming}
+\textbf{Dataset overfitting}:
+\begin{itemize}
+  \item tuning on benchmarks until saturation;
+  \item may not generalize to similar data;
+  \item compared on same benchmarks where tuned.
+\end{itemize}
+
+\textbf{Metric gaming}:
+\begin{itemize}
+  \item metric doesn't reflect actual goal;
+  \item accuracy up, latency down (impractical);
+  \item ignores domain constraints (fairness, interpretability).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Reproducibility Concerns}
+\textbf{Red flags}:
+\begin{itemize}
+  \item code unavailable ("upon request");
+  \item hard-coded paths in code;
+  \item old or unavailable libraries;
+  \item random seeds not reported;
+  \item no documentation.
+\end{itemize}
+
+\textbf{Green flags}:
+\begin{itemize}
+  \item GitHub with clear instructions;
+  \item environment specified (requirements, Docker);
+  \item reproduction scripts;
+  \item hyperparameter documentation.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Transfer Learning and Fine-tuning}
+\textbf{Be skeptical}:
+\begin{itemize}
+  \item ImageNet pre-training on different domains;
+  \item fine-tuning on tiny datasets;
+  \item no ablation of pre-training benefit;
+  \item fine-tuned vs. from-scratch comparisons.
+\end{itemize}
+
+\textbf{Standard practice}:
+\begin{itemize}
+  \item compare pre-trained and from-scratch equally;
+  \item tune fine-tuning hyperparameters carefully.
+\end{itemize}
+
+\end{frame}
+
+\section{Spotting Questionable Research Practices (QRPs)}
+
+\begin{frame}[fragile]
+\frametitle{Common QRPs in Computer Science}
+\textbf{Selective reporting}:
+\begin{itemize}
+  \item report only positive results;
+  \item cherry-pick datasets where method wins;
+  \item redefine success criteria after seeing data.
+\end{itemize}
+
+\textbf{Flexibility in analysis}:
+\begin{itemize}
+  \item choose aggregation/metric that looks best;
+  \item post-hoc grouping of data;
+  \item threshold data after seeing results.
+\end{itemize}
+
+\textbf{HARKing} (Hypothesizing After Results are Known):
+\begin{itemize}
+  \item claim results were predicted after seeing them;
+  \item frame exploratory as confirmatory.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Documentation of Questionable Practices}
+\textbf{Papers sometimes reveal their own QRPs}:
+\begin{itemize}
+  \item "we ran this experiment three times and report the best result" (cherry-picking);
+  \item "we tried many variants and chose the most stable" (HARKing);
+  \item "ablations are in the appendix" (but appendix is missing);
+  \item "we optimized hyperparameters for each baseline" vs. "we use default hyperparameters" (inconsistent effort).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Questions to Ask}
+When something feels off:
+
+\begin{enumerate}
+  \item Would conclusion hold with reasonable parameter variation?
+  \item Were hyperparameters tuned on test set?
+  \item Are results consistent across datasets?
+  \item Could improvements be implementation differences?
+\end{enumerate}
+
+\end{frame}
+
+\section{Constructive Feedback}
+
+\begin{frame}[fragile]
+\frametitle{Writing an Effective Review}
+\textbf{Structure}:
+\begin{enumerate}
+  \item Summary (1-2 sentences);
+  \item Strengths (2-3 points);
+  \item Weaknesses (ordered by importance);
+  \item Questions and suggestions;
+  \item Recommendation.
+\end{enumerate}
+
+\textbf{Tone}:
+\begin{itemize}
+  \item be specific: point to exact issues;
+  \item criticize the work, not authors;
+  \item be constructive;
+  \item be honest about uncertainty.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Reviewer's Checklist}
+Before submitting your review:
+
+{\footnotesize
+\begin{tabular}{p{6.5cm}p{3.5cm}}
+\toprule
+\textbf{Question} & \textbf{Checked} \\
+\midrule
+Is the contribution novel and significant? & \\
+Are the claims supported by evidence? & \\
+Is the method described clearly enough to reproduce? & \\
+Are comparisons fair (same computational budget, tuning effort)? & \\
+Are limitations acknowledged? & \\
+Are there obvious statistical/methodological errors? & \\
+Are there red flags for fabrication or falsification? & \\
+Is the paper well-written and organized? & \\
+\bottomrule
+\end{tabular}
+}
+
+\end{frame}
+
+\section{Reviewing for Conferences vs. Journals}
+
+\begin{frame}[fragile]
+\frametitle{Conference Reviews}
+\textbf{Timeline}: 2-4 weeks.
+
+\textbf{Characteristics}:
+\begin{itemize}
+  \item \textbf{broad scope}: papers from many areas;
+  \item \textbf{quick turnaround}: reviewers are rushed;
+  \item \textbf{single-blind or double-blind}: reviewer anonymity varies;
+  \item \textbf{lower bar}: acceptance rate 15-30\%, still high volume.
+\end{itemize}
+
+\textbf{Your review is brief but must address}:
+\begin{itemize}
+  \item novelty and significance;
+  \item correctness of main claims;
+  \item clarity;
+  \item recommendation.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Journal Reviews}
+\textbf{Timeline}: 3-6 months (often longer).
+
+\textbf{Characteristics}:
+\begin{itemize}
+  \item \textbf{specialized scope}: reviewers are experts in the domain;
+  \item \textbf{thorough evaluation}: multiple detailed reviews;
+  \item \textbf{typically double-blind}: identities hidden;
+  \item \textbf{higher bar}: acceptance rate 5-20\%.
+\end{itemize}
+
+\textbf{Your review should be comprehensive}:
+\begin{itemize}
+  \item detailed assessment of methodology;
+  \item thorough examination of results;
+  \item comparison to related work;
+  \item constructive feedback for improvement.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Open-Science and Preprint Review}
+\textbf{Preprints} (arXiv, bioRxiv, medRxiv):
+\begin{itemize}
+  \item unvetted, rapid dissemination;
+  \item \textbf{you can comment publicly} on preprints;
+  \item valuable for catching errors before journal acceptance;
+  \item community review complements formal peer review.
+\end{itemize}
+
+\textbf{Advantages}:
+\begin{itemize}
+  \item faster feedback to authors;
+  \item public accountability (trolling risk, but also prevents editorial bias);
+  \item archival record of review process.
+\end{itemize}
+
+\end{frame}
+
+\section{Reviewing Your Own Work: Personal Research}
+
+\begin{frame}[fragile]
+\frametitle{Reading Papers in Your Field}
+As a researcher, you read papers to:
+\begin{itemize}
+  \item \textbf{keep current}: understand new methods, results, trends;
+  \item \textbf{find prior art}: for literature reviews, novelty claims;
+  \item \textbf{learn techniques}: understand how to apply methods;
+  \item \textbf{evaluate claims}: decide what to build on.
+\end{itemize}
+
+Apply the same critical reading to papers you consider building on.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Detecting Over-Claimed Results}
+\textbf{Common over-claims}:
+\begin{itemize}
+  \item "state-of-the-art" vs. old baselines;
+  \item "efficient" vs. naive implementation;
+  \item "robust" on similar distributions;
+  \item "solves" one variant of problem.
+\end{itemize}
+
+\textbf{Check}:
+\begin{itemize}
+  \item what exactly was measured?
+  \item are baselines standard?
+  \item what limitations are acknowledged?
+  \item does it work on your data?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Integrating External Code}
+Before using an implementation:
+
+\textbf{Check}:
+\begin{itemize}
+  \item does code match described algorithm?
+  \item results match paper numbers?
+  \item well-documented?
+  \item reproducibility issues?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Building a Personal Research Notebook}
+As you read papers:
+\begin{itemize}
+  \item record your assessment of contribution and evidence;
+  \item note red flags and questionable claims;
+  \item track which papers build on which;
+  \item plan validation experiments.
+\end{itemize}
+
+This helps you avoid repeating mistakes and find improvement opportunities.
+
+\end{frame}
+
+\section{Common Mistakes Reviewers Make}
+
+\begin{frame}[fragile]
+\frametitle{Mistakes to Avoid: Fairness}
+\textbf{Being too harsh}:
+\begin{itemize}
+  \item rejecting papers for incompleteness;
+  \item expecting perfection;
+  \item criticizing authors instead of work.
+\end{itemize}
+
+\textbf{Being too lenient}:
+\begin{itemize}
+  \item accepting obvious flaws;
+  \item not asking for evidence;
+  \item following the herd consensus.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Mistakes to Avoid: Bias and Scope}
+\textbf{Over-scoping}:
+\begin{itemize}
+  \item expecting theory in empirical papers or vice versa;
+  \item reviewing outside your expertise.
+\end{itemize}
+
+\textbf{Conflicts of interest}:
+\begin{itemize}
+  \item reviewing papers citing your work;
+  \item reviewing competitors;
+  \item not declaring conflicts;
+  \item promoting your own work.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Staying Objective}
+\textbf{Bias mitigation}:
+\begin{itemize}
+  \item review the work, not the authors or their affiliations;
+  \item be aware of your own biases (field biases, methodological biases);
+  \item if you're too close to the topic, consider declining the review;
+  \item re-read your review for unfair language before submitting.
+\end{itemize}
+
+\textbf{When to decline}:
+\begin{itemize}
+  \item you lack expertise in the method or domain;
+  \item you have a conflict of interest;
+  \item you don't have time to do a thorough review;
+  \item you dislike the authors or their prior work (this affects objectivity).
+\end{itemize}
+
+\end{frame}
+
+\section{Summary and Practical Advice}
+
+\begin{frame}[fragile]
+\frametitle{Key Principles}
+\begin{enumerate}
+  \item \textbf{be a critical reader}: scrutinize methodology, results, and claims;
+  \item \textbf{distinguish honest errors from manipulation}: errors are common, malice is rare;
+  \item \textbf{check for red flags} in statistics, methodology, and presentation;
+  \item \textbf{be constructive}: provide feedback that helps authors improve;
+  \item \textbf{stay objective}: review the work, not the authors;
+  \item \textbf{know your limits}: don't review outside your expertise.
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Reviewing Checklist}
+{\footnotesize
+\begin{enumerate}
+  \item Read the abstract and introduction to understand the scope
+  \item Identify the main claims and evidence
+  \item Check methodology for red flags (data leakage, unfair comparisons, weak baselines)
+  \item Assess statistical rigor (error bars, significance tests, multiple comparisons)
+  \item Look for cherry-picked results or selective reporting
+  \item Verify that conclusion matches the evidence
+  \item Check clarity of writing and reproducibility claims
+  \item Consider whether the work is novel and significant
+  \item Write a fair, constructive review
+  \item Declare any conflicts of interest
+\end{enumerate}
+}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Resources}
+\textbf{For deeper learning}:
+\begin{itemize}
+  \item NIH: Guidelines for responsible conduct of research;
+  \item Ioannidis (2005): "Why Most Published Research Findings Are False";
+  \item Gelman and Loken (2013): "The garden of forking paths";
+  \item open science frameworks: Open Science Foundation, FAIR data principles;
+  \item domain-specific guidelines: ML reproducibility standards, computational science practice guides.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Final Thought}
+Good peer review is essential to science. As a reviewer, you help maintain research integrity. Be thorough, fair, and constructive — and remember that peer review is ultimately about helping the research community move closer to truth.
+\end{frame}
+
+
+
+
+\end{document}
